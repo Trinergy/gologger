@@ -8,14 +8,14 @@ import (
 )
 
 // SetupLogger is a basic logger that creates and writes to a select file
-func SetupLogger(filename string) *log.Logger {
-	file := setupLogFile(filename)
+func SetupLogger(file *os.File) *log.Logger {
 	multi := io.MultiWriter(file, os.Stdout)
 	Logger := log.New(multi, "LOGGER: ", log.Ldate|log.Ltime)
 	return Logger
 }
 
-func setupLogFile(filename string) *os.File {
+// SetupLogFile creates a file to be written to. Should be used with SetupLogger
+func SetupLogFile(filename string) *os.File {
 	_, err := os.Stat(filename) // does file exist?
 	if err == nil {
 		removeFile(filename)
